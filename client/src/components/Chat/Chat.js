@@ -23,7 +23,6 @@ const Chat = (props) => {
     setName(name)
     setRoom(room)
     socket.emit('join', { name, room }, () => { })
-    socket.on('message', args => console.log(args))
     return () => {
       socket.emit('disconnect')
       socket.off()
@@ -38,8 +37,9 @@ const Chat = (props) => {
 
   const sendMessage = (event) => {
     event.preventDefault()
+    console.log(message)
     if (message) {
-      socket.emit('sendMessage', message, () => setMessage(''))
+      socket.emit('sendMessage', {name, text:message}, () => setMessage(''))
     }
   }
 
