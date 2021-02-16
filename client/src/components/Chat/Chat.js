@@ -4,6 +4,7 @@ import io from 'socket.io-client'
 
 import './Chat.css'
 import InfoBar from '../../components/InfoBar/InforBar'
+import TextContainer from '../../components/TextContainer/TextContainer'
 import Input from '../Input/Input'
 import Messages from '../Messages/Messages'
 
@@ -15,6 +16,7 @@ const Chat = (props) => {
   const [room, setRoom] = useState('')
   const [message, setMessage] = useState('')
   const [messages, setMessages] = useState([])
+  const [users, setUsers] = useState([])
   const ENDPOINT = 'localhost:5000'
 
   useEffect(() => {
@@ -35,6 +37,12 @@ const Chat = (props) => {
     })
   }, [messages])
 
+  useEffect(() => {
+    socket.on('roomData', ({ room, users }) => {
+      setUsers(users)
+    })
+  }, [users])
+
   const sendMessage = (event) => {
     event.preventDefault()
     console.log(message)
@@ -42,8 +50,6 @@ const Chat = (props) => {
       socket.emit('sendMessage', {name, text:message}, () => setMessage(''))
     }
   }
-
-  console.log(messages)
 
   return (
     <div className='outerContainer'>
@@ -56,6 +62,7 @@ const Chat = (props) => {
           sendMessage={sendMessage} 
         />
       </div>
+      <TextContainer users={users} />
     </div>
   )
 }
