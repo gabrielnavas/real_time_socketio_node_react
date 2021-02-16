@@ -2,6 +2,8 @@ import React from 'react'
 
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
+import './styles/Global.css'
+
 import Join from './components/Join/Join'
 import Chat from './components/Chat/Chat'
 
